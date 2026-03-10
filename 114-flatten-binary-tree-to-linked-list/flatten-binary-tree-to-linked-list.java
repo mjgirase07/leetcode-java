@@ -27,22 +27,43 @@ class Solution {
 
         //Approach - 2 : Stack
 
-        Stack<TreeNode> st = new Stack<>();
-        st.push(root);
-        while(!st.isEmpty()){
-            TreeNode node = st.peek();
-            st.pop();
+        // Stack<TreeNode> st = new Stack<>();
+        // st.push(root);
+        // while(!st.isEmpty()){
+        //     TreeNode node = st.peek();
+        //     st.pop();
 
-            if(node.right!=null){
-                st.push(node.right);
+        //     if(node.right!=null){
+        //         st.push(node.right);
+        //     }
+        //     if(node.left!=null){
+        //         st.push(node.left);
+        //     }
+        //     if(!st.isEmpty()){
+        //         node.right = st.peek();
+        //     }
+        //     node.left = null;
+        // }
+
+        //Approach - 3 : Morris preorder traversal
+
+        TreeNode cur = root;
+
+        while(cur != null){
+
+            if(cur.left != null){
+                 
+                TreeNode prev = cur.left;
+                while(prev.right!=null){
+                    prev = prev.right;
+                }
+                
+                
+                    prev.right = cur.right;
+                    cur.right = cur.left;
+                    cur.left = null;
             }
-            if(node.left!=null){
-                st.push(node.left);
-            }
-            if(!st.isEmpty()){
-                node.right = st.peek();
-            }
-            node.left = null;
+                cur = cur.right;
         }
     }
 
