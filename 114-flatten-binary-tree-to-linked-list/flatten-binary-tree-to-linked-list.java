@@ -14,15 +14,36 @@
  * }
  */
 class Solution {
-    TreeNode prev = null;
+    //TreeNode prev = null;
     public void flatten(TreeNode root) {
+        //Approach - 1 : Recursive
         if(root == null) return;
 
-        flatten(root.right);
-        flatten(root.left);
-        root.right = prev;
-        root.left = null;
-        prev = root;
+        // flatten(root.right);
+        // flatten(root.left);
+        // root.right = prev;
+        // root.left = null;
+        // prev = root;
+
+        //Approach - 2 : Stack
+
+        Stack<TreeNode> st = new Stack<>();
+        st.push(root);
+        while(!st.isEmpty()){
+            TreeNode node = st.peek();
+            st.pop();
+
+            if(node.right!=null){
+                st.push(node.right);
+            }
+            if(node.left!=null){
+                st.push(node.left);
+            }
+            if(!st.isEmpty()){
+                node.right = st.peek();
+            }
+            node.left = null;
+        }
     }
 
 }
