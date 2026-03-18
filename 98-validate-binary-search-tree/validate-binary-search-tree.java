@@ -17,8 +17,9 @@ class Solution {
     ArrayList<Integer> arr = new ArrayList<>();
     public boolean isValidBST(TreeNode root) {
         if(root.left == null && root.right == null) return true;
-        inorder(root);
-        return helper(arr);
+        //inorder(root);
+        //return helper(arr);
+        return preorder(root,Long.MIN_VALUE,Long.MAX_VALUE);
     }
 
     void inorder(TreeNode root){
@@ -36,6 +37,13 @@ class Solution {
             else return false;
         }
         return true;
+    }
+
+    boolean preorder(TreeNode root,long min, long max){
+        if(root == null) return true;
+            if(root.val>=max || root.val<=min) return false;
+            return preorder(root.left,min,root.val) &&
+            preorder(root.right,root.val,max);
     }
 
 }
