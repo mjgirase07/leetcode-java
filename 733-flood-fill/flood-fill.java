@@ -1,34 +1,24 @@
 class Solution {
     public int[][] floodFill(int[][] image, int sr, int sc, int color) {
         
-        int m = image.length; //rows
-        int n = image[0].length; //col 
-        int toColor = image[sr][sc];
-        if(toColor == color) return image;
-        Queue<int[]> queue = new LinkedList<>();
- 
-
-        queue.add(new int[]{sr,sc});
-        image[sr][sc] = color;
-        //4 directions
-        int[] dx = {0,0,1,-1}; 
-        int[] dy = {1,-1,0,0};
-
+       
+        int originalColor = image[sr][sc];
+        if(originalColor == color) return image;
         
-
-        while(!queue.isEmpty()){
-                int[] pos = queue.poll();
-                int x = pos[0], y=pos[1];
-                for(int d=0; d<4; d++){
-                    int nx = x+dx[d];
-                    int ny = y+dy[d];
-                    if(nx<0 || ny<0 || nx>=m || ny>=n || image[nx][ny] != toColor){
-                        continue;
-                    }
-                        image[nx][ny] = color;
-                        queue.add(new int[]{nx,ny});
-                }
-        } 
+        dfs(image,sr,sc,originalColor,color);
         return image;
+    }
+
+    private void dfs(int[][] image, int x, int y,int originalColor, int color){
+        if(x<0 || y<0 || x>=image.length || y>=image[0].length || image[x][y]!=originalColor){
+            return;
+        }
+
+        image[x][y] = color;
+
+        dfs(image,x+1,y,originalColor,color);
+        dfs(image,x,y+1,originalColor,color);
+        dfs(image,x-1,y,originalColor,color);
+        dfs(image,x,y-1,originalColor,color);
     }
 }
