@@ -17,9 +17,6 @@ class Solution {
         
 
         while(!queue.isEmpty()){
-            int k = queue.size();
-            
-            for(int i=0; i<k; i++){
                 int[] pos = queue.poll();
                 int x = pos[0], y=pos[1];
                 for(int d=0; d<4; d++){
@@ -28,13 +25,9 @@ class Solution {
                     if(nx<0 || ny<0 || nx>=m || ny>=n || image[nx][ny] != toColor){
                         continue;
                     }
-                    
                         image[nx][ny] = color;
                         queue.add(new int[]{nx,ny});
-                    
                 }
-            }
-            
         } 
         return image;
     }
