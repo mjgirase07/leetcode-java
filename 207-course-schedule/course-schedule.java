@@ -20,8 +20,7 @@ class Solution {
         int i=0;
         
         while(!q.isEmpty()){
-            int node = q.peek();
-            q.remove();
+            int node = q.poll();
             i++;
             for(int it:adj.get(node)){
                 indegree[it]--;
