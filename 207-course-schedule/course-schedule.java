@@ -6,28 +6,31 @@ class Solution {
         for (int[] pre : prerequisites)
             adj.get(pre[1]).add(pre[0]);
         
-        boolean[] vis = new boolean[numCourses];
-        boolean[] path = new boolean[numCourses];
+        int[] indegree = new int[numCourses];
         for(int i=0; i<numCourses; i++){
-            if(!vis[i]){
-                if(dfs(i,path,vis,adj)) return false;
+            for(int it : adj.get(i)){
+                indegree[it]++;
             }
         }
-        return true;
-    }
 
-    private boolean dfs(int node,boolean[] path, boolean[] vis, ArrayList<ArrayList<Integer>> adj){
-        vis[node]=path[node] = true;
-        for(Integer adjNode : adj.get(node)){
-            if(!vis[adjNode]){
-                if(dfs(adjNode,path,vis,adj)){
-                    return true;
+        Queue<Integer> q = new LinkedList<>();
+        for(int i=0; i<numCourses; i++){
+            if(indegree[i]==0) q.add(i);
+        }
+        int i=0;
+        
+        while(!q.isEmpty()){
+            int node = q.peek();
+            q.remove();
+            i++;
+            for(int it:adj.get(node)){
+                indegree[it]--;
+                if(indegree[it]==0){
+                    q.add(it);
                 }
-            } else if(path[adjNode]){
-                return true;
             }
         }
-        path[node] = false;
+        if(i == numCourses) return true;
         return false;
     }
 }
