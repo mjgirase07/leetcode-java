@@ -1,36 +1,34 @@
 class Solution {
-    public int[] findOrder(int numCourses, int[][] prerequisites) {
-        ArrayList<Integer> ans = new ArrayList<>();
+    public int[] findOrder(int V, int[][] prerequisites) {
+        
         ArrayList<ArrayList<Integer>> adjLs = new ArrayList<>();
-        for(int i=0; i<numCourses; i++){adjLs.add(new ArrayList<>());}
+        for(int i=0; i<V; i++){adjLs.add(new ArrayList<>());}
         for(int[] pre : prerequisites){
             adjLs.get(pre[1]).add(pre[0]);
         }
 
-        boolean[] vis = new boolean[numCourses];
-        boolean[] path = new boolean[numCourses];
-        for(int i=0; i<numCourses; i++){
-            if(!vis[i]){
-                if(dfs(i,vis,path,adjLs,ans)) return new int[0];
+        int[] indegree = new int[V];
+        for(int i=0; i<V; i++){
+            for(Integer it : adjLs.get(i)){
+                indegree[it]++;
             }
         }
-
-        Collections.reverse(ans);
-        return ans.stream().mapToInt(i->i).toArray();
-    }
-
-    private boolean dfs(int node,boolean[] vis, boolean[] path, ArrayList<ArrayList<Integer>> adjLs, ArrayList<Integer> ans){
-        vis[node] = path[node] = true;
-
-        for(Integer it:adjLs.get(node)){
-            if(!vis[it]){
-                if(dfs(it,vis,path,adjLs,ans))
-                    return true;
-            } else if(path[it])
-                return true;
+        Queue<Integer> q = new LinkedList<>();
+        for(int i=0; i<V; i++){
+            if(indegree[i] == 0) q.add(i);
         }
-        ans.add(node);
-        path[node]=false;
-        return false;
+
+        int i=0;
+        int[] topo = new int[V];
+        while(!q.isEmpty()){
+            int node = q.poll();
+            topo[i++] = node;
+            for(Integer it:adjLs.get(node)){
+                indegree[it]--;
+                if(indegree[it]==0) q.add(it);
+            } 
+        }
+        if(i != V) return new int[0];
+        return topo;
     }
 }
