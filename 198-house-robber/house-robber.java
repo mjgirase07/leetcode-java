@@ -5,8 +5,7 @@ class Solution {
         
         // fun(nums.length-1,nums,dp);
 
-        if(nums.length==1) return nums[0];
-        if(nums.length==2) return Math.max(nums[0],nums[1]);
+        
 
         dp[0]=nums[0];
         int neg = 0;
