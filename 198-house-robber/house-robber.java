@@ -1,32 +1,29 @@
 class Solution {
     public int rob(int[] nums) {
-        int[] dp = new int[nums.length];
-        Arrays.fill(dp,-1);
+       // int[] dp = new int[nums.length];
+       // Arrays.fill(dp,-1);
         
         // fun(nums.length-1,nums,dp);
 
+       // dp[0]=nums[0];
         
+        int prev =nums[0], curr=0;
+        int prev2 = 0;
 
-        dp[0]=nums[0];
-        int neg = 0;
-
-        int pick = Integer.MIN_VALUE;
-        int notPick = Integer.MIN_VALUE;
         for(int i=1; i<nums.length; i++){
-            
-            if(i-2<neg){
-                pick = nums[i];
+            int pick = nums[i];
+            if(i>1){
+                pick = nums[i]+prev2;
             }
             
-            else{
-                pick = nums[i]+dp[i-2];
-            }
-                notPick = dp[i-1];
+            int notPick = prev;
 
-            dp[i] = Math.max(pick, notPick);
+            curr = Math.max(pick, notPick);
+            prev2 = prev;
+            prev = curr;
         }
 
-        return dp[nums.length-1];
+        return prev;
     }
 
     static int fun(int ind,int[] nums, int[] dp){
