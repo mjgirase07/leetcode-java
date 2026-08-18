@@ -6,7 +6,22 @@ class Solution {
             Arrays.fill(arr,-1);
         }
 
-        return func(m-1,n-1,dp,grid);
+        for(int i=0; i<m; i++){
+            for(int j=0; j<n; j++){
+                if(i==0 && j==0){
+                    dp[i][j] = grid[i][j];
+                    continue;
+                }
+
+                int up = (i>0)?dp[i-1][j]+grid[i][j]:(int)1e9;
+                int down = (j>0)?dp[i][j-1]+grid[i][j]:(int)1e9;
+
+                dp[i][j] = Math.min(up,down);
+            }
+        }
+
+        return dp[m-1][n-1];
+        //return func(m-1,n-1,dp,grid);
         
     }
     int func(int i, int j, int[][] dp, int[][] grid){
