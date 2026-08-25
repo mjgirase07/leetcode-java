@@ -5,15 +5,39 @@ class Solution {
         for(int n:nums){
             totalSum += n;
         }
+        int target = totalSum/2;
 
         if (totalSum%2!=0) return false;
-        int[][] dp = new int[nums.length][(totalSum/2) + 1];
+        //int[][] dp = new int[nums.length][(totalSum/2) + 1];
 
-        for(int[] arr:dp){
-            Arrays.fill(arr,-1);
+        // for(int[] arr:dp){
+        //     Arrays.fill(arr,-1);
+        // }
+
+        //return func(nums.length-1,totalSum/2,nums, dp);
+
+        boolean[][] dp = new boolean[nums.length][target + 1];
+
+      
+        for(int i=0; i<dp.length; i++){
+            dp[i][0] = true;
         }
 
-        return func(nums.length-1,totalSum/2,nums, dp);
+        if(nums[0]<=target) dp[0][nums[0]] = true;
+
+        for(int i=1; i<nums.length; i++){
+            for(int j=1; j<=target; j++){
+                boolean notTaken = dp[i-1][j];
+                boolean taken = false;
+                if(nums[i]<=j){
+                    taken = dp[i-1][j-nums[i]];
+                }
+                dp[i][j] = taken || notTaken;
+            }
+        }
+
+        return dp[nums.length-1][target];
+
     }
     boolean func(int ind, int target, int[] nums, int[][] dp){
         if(target==0) return true;
