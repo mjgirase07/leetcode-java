@@ -9,20 +9,38 @@ class Solution {
         // int ans = calc(n-1,amount,coins,dp);
         // return ans >= (int)1e9 ? -1 : ans;
 
+        // for(int amt=0; amt<=amount; amt++){
+        //     if(amt%coins[0]==0) dp[0][amt] = amt/coins[0];
+        //     else dp[0][amt] = (int)1e9;
+        // }
+
+        // for(int i=1; i<n; i++){
+        //     for(int amt=0; amt<=amount; amt++){
+        //         int notTake = dp[i-1][amt];
+        //         int take = (int)1e9;
+        //         if(coins[i]<=amt) take = 1 + dp[i][amt-coins[i]];
+        //         dp[i][amt] = Math.min(take,notTake);
+        //     }
+        // }
+
+        int[] prev = new int[amount+1];
         for(int amt=0; amt<=amount; amt++){
-            if(amt%coins[0]==0) dp[0][amt] = amt/coins[0];
-            else dp[0][amt] = (int)1e9;
+            if(amt%coins[0] == 0) prev[amt] = amt/coins[0];
+            else prev[amt] = (int)1e9;
         }
 
         for(int i=1; i<n; i++){
+            int[] curr = new int[amount+1];
             for(int amt=0; amt<=amount; amt++){
-                int notTake = dp[i-1][amt];
+                int notTake = prev[amt];
                 int take = (int)1e9;
-                if(coins[i]<=amt) take = 1 + dp[i][amt-coins[i]];
-                dp[i][amt] = Math.min(take,notTake);
+                if(coins[i]<=amt) take = 1 + curr[amt-coins[i]];
+                curr[amt] = Math.min(take,notTake);
             }
+            prev = curr;
         }
-         int ans = dp[n-1][amount];
+
+         int ans = prev[amount];
          return ans >= (int)1e9 ? -1 : ans; 
     }
 
