@@ -11,12 +11,32 @@ class Solution {
             return 0;
         }
 
+        newTarget /= 2;
+
         int[][] dp = new int[n][newTarget+1];
-        for(int[] arr: dp){
-            Arrays.fill(arr,-1);
+        // for(int[] arr: dp){
+        //     Arrays.fill(arr,-1);
+        // }
+
+        // return calc(n-1,newTarget/2,nums,dp);
+
+        
+        if(nums[0]==0) dp[0][0] = 2;
+        else dp[0][0] = 1;
+
+        if(nums[0] !=0 && nums[0]<=newTarget) dp[0][nums[0]] = 1;
+        
+        for(int ind=1; ind<n; ind++){
+            for(int t=0; t<=newTarget; t++){
+                int notTake = dp[ind-1][t];
+                int take = 0;
+                if(nums[ind]<=t) take = dp[ind-1][t-nums[ind]];
+                dp[ind][t] = take+notTake;
+            }
         }
 
-        return calc(n-1,newTarget/2,nums,dp);
+        return dp[n-1][newTarget];
+
     }
     int calc(int ind, int target, int[] arr, int[][] dp){
         if(ind == 0){
