@@ -2,11 +2,27 @@ class Solution {
     public int change(int amount, int[] coins) {
         int n = coins.length;
         int[][] dp = new int[n][amount+1];
-        for(int[] arr:dp){
-            Arrays.fill(arr,-1);
+        // for(int[] arr:dp){
+        //     Arrays.fill(arr,-1);
+        // }
+
+        // return calc(n-1,amount,coins,dp);
+
+        //Tabulation
+        for(int amt=0; amt<=amount; amt++){
+            if(amt%coins[0]==0) dp[0][amt] = 1;
         }
 
-        return calc(n-1,amount,coins,dp);
+        for(int ind=1; ind<n; ind++){
+            for(int amt=0; amt<=amount; amt++){
+                int notTake = dp[ind-1][amt];
+                int take = 0;
+                if(coins[ind]<=amt) take = dp[ind][amt-coins[ind]];
+                dp[ind][amt] = take+notTake;
+            }
+        }
+
+        return dp[n-1][amount];
         
     }
 
